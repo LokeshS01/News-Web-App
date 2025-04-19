@@ -1,6 +1,5 @@
 const API_KEY = "5d695c5b19304787bc89c90d299b8a29";
-const baseUrl = "https://newsapi.org/v2/everything?q=";
-const proxyUrl = "https://api.allorigins.win/get?url=";
+const url = "https://newsapi.org/v2/everything?q=";
 
 window.addEventListener("load", () => fetchNews("India"));
 
@@ -9,17 +8,9 @@ function reload() {
 }
 
 async function fetchNews(query) {
-    const targetUrl = `${baseUrl}${query}&apiKey=${API_KEY}`;
-    const encodedUrl = encodeURIComponent(targetUrl);
-
-    try {
-        const res = await fetch(`${proxyUrl}${encodedUrl}`);
-        const proxyData = await res.json();
-        const data = JSON.parse(proxyData.contents);
-        bindData(data.articles);
-    } catch (error) {
-        console.error("Error fetching news:", error);
-    }
+    const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
+    const data = await res.json();
+    bindData(data.articles);
 }
 
 function bindData(articles) {
@@ -58,7 +49,6 @@ function fillDataInCard(cardClone, article) {
 }
 
 let curSelectedNav = null;
-
 function onNavItemClick(id) {
     fetchNews(id);
     const navItem = document.getElementById(id);
